@@ -12,10 +12,16 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var difficultyPickerView: UIPickerView!
+    @IBOutlet weak var playBtn: UIButton!
     
-    var difficultyList = [ "Easy", "Medium", "Hard" ]
+    enum DifficultyType {
+        case EASY
+        case MEDIUM
+        case HARD
+    }
+    var difficultyList = [ DifficultyType.EASY, DifficultyType.MEDIUM, DifficultyType.HARD ]
     
-
+    var selectedDifficulty = DifficultyType.MEDIUM
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -26,14 +32,31 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         self.view.endEditing(true)
-        return difficultyList[row]
+        switch row {
+            case 1:
+            return "Easy"
+            case 2:
+            return "Medium"
+            case 3:
+            return "Hard"
+        default:
+            return "Easy"
+        }
+
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        //self.difficultyPickerView.isHidden = true
+        selectedDifficulty = difficultyList[row];
     }
     
-    
+    @IBAction func onPlayclicked(_ sender: Any) {
+        //print("selectedDifficulty = " + selectedDifficulty.hashValue)
+        if let name = userNameTextField.text {
+            print("username = " + name)
+        }
+        
+    }
+
 
     
     override func viewDidLoad() {
@@ -49,6 +72,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         // Dispose of any resources that can be recreated.
     }
 
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.destination is GameScreenViewController {
+            let vc = segue.destination as? GameScreenViewController
+            if let name = userNameTextField.text {
+                vc?.recievedUserName = name
+            }
+        }
+        
+    }
 }
 
