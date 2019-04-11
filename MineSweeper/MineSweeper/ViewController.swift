@@ -19,7 +19,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     var difficultyList = [ DifficultyType.EASY, DifficultyType.MEDIUM, DifficultyType.HARD ]
 
-    var selectedDifficulty = DifficultyType.MEDIUM
+    var selectedDifficulty = DifficultyType.EASY
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

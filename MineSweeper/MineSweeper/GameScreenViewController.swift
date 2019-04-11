@@ -52,14 +52,23 @@ class GameScreenViewController: UIViewController {
     func setGameBoard() -> Void {
         self.gameGridView.register(UINib(nibName: "CellItem", bundle: nil), forCellWithReuseIdentifier: "CellItem")
         
-        
         let layout = self.gameGridView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
         layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSize(
-            width: (self.gameGridView.frame.size.width)/5,
-            height: (self.gameGridView.frame.size.height)/5)
- 
+        
+        if let board = gameBoard {
+            let boardSize = board.rows
+            print("boardSize = " + String(boardSize))
+            if (boardSize == 5) {
+            layout.itemSize = CGSize(
+                width: (self.gameGridView.frame.size.width)/5,
+                height: (self.gameGridView.frame.size.height)/5)
+            } else if (boardSize == 10) {
+                layout.itemSize = CGSize(
+                    width: (self.gameGridView.frame.size.width)/10,
+                    height: (self.gameGridView.frame.size.height)/10)
+            }
+        }
     }
     
     func initGameBoard() -> Void {
@@ -71,7 +80,7 @@ class GameScreenViewController: UIViewController {
         case DifficultyType.HARD:
             gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
         }
-        // gameBoard.initBoard()
+        //gameBoard?.initBoard()
     }
     
     func drawBoard() -> Void {
@@ -97,6 +106,14 @@ class GameScreenViewController: UIViewController {
 
 extension GameScreenViewController : UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.item) // the cell that was clicked!!!
+        let cell = gameGridView.cellForItem(at: indexPath) as! CellItem
+        cell.setData(imageName: "bomb")
+        //let logicCell = gameBoard?.cellsGrid[indexPath.item/10][indexPath.item%10]
+    }
+    
+    
 }
 
 extension GameScreenViewController : UICollectionViewDataSource {
@@ -110,7 +127,9 @@ extension GameScreenViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = gameGridView.dequeueReusableCell(withReuseIdentifier: "CellItem", for: indexPath) as! CellItem
+        
         cell.setData(imageName: "facingDown")
+        
         
         return cell
     }

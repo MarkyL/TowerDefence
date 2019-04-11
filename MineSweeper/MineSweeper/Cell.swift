@@ -53,7 +53,9 @@ class Cell{
         self.hasMine = !self.hasMine
     }
     
-    
+    func getIsOpened() -> Bool {
+        return isOpened
+    }
     
 }
 

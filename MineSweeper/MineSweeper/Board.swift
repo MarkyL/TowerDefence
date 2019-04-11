@@ -28,9 +28,9 @@ class Board{
     
     func initBoard(){
         
-        for i in 0...self.rows {
-            for j in 0...self.cols {
-                self.cellsGrid[i][j] = Cell(row: i, col: j, hasMine: true)
+        for i in 0...self.rows - 1 {
+            for j in 0...self.cols - 1 {
+                self.cellsGrid[i][j] = Cell(row: i, col: j, hasMine: false)
             }
         }
         placeMines()
