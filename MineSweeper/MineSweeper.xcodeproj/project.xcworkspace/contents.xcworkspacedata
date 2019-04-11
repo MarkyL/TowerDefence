@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:MineSweeper.xcodeproj">
+      location = "group:/Users/marklurie/Documents/mo_ms/MineSweeper/MineSweeper/Cell.swift">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>
