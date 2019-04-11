@@ -65,11 +65,11 @@ class GameScreenViewController: UIViewController {
     func initGameBoard() -> Void {
         switch (recievedDifficulty) {
         case DifficultyType.EASY:
-            gameBoard = Board.init(rows: 5, cols: 5, minesAmount: 5)
+            gameBoard = Board(rows: 5, cols: 5, minesAmount: 5)
         case DifficultyType.MEDIUM:
-            gameBoard = Board.init(rows: 10, cols: 10, minesAmount: 20)
+            gameBoard = Board(rows: 10, cols: 10, minesAmount: 20)
         case DifficultyType.HARD:
-            gameBoard = Board.init(rows: 10, cols: 10, minesAmount: 30)
+            gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
         }
         // gameBoard.initBoard()
     }
