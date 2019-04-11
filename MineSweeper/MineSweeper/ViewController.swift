@@ -8,19 +8,15 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource{
+class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate{
     
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var difficultyPickerView: UIPickerView!
     @IBOutlet weak var playBtn: UIButton!
     
-    enum DifficultyType {
-        case EASY
-        case MEDIUM
-        case HARD
-    }
+  
     var difficultyList = [ DifficultyType.EASY, DifficultyType.MEDIUM, DifficultyType.HARD ]
-    
+
     var selectedDifficulty = DifficultyType.MEDIUM
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -64,9 +60,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         // Do any additional setup after loading the view, typically from a nib.
         // mark test first commit
         
-        
+        self.userNameTextField.delegate = self
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return true
+    }
+    	
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -77,6 +78,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
             let vc = segue.destination as? GameScreenViewController
             if let name = userNameTextField.text {
                 vc?.recievedUserName = name
+                vc?.recievedDifficulty = selectedDifficulty
             }
         }
         

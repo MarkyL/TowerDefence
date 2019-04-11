@@ -14,12 +14,15 @@ class GameScreenViewController: UIViewController {
     @IBOutlet weak var someBtn: UIButton!
     
     var recievedUserName : String = "INITIAL TEXT"
+    var recievedDifficulty : DifficultyType = DifficultyType.EASY
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         userNameText.text = recievedUserName
+        print(userNameText.text)
+        print(recievedDifficulty)
     }
     
 
