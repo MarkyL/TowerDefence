@@ -17,6 +17,8 @@
 		CF9BA8C82258E065007E4C6B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF9BA8C62258E065007E4C6B /* LaunchScreen.storyboard */; };
 		D5E7B7E4225F2A6F00E06D5B /* DifficultyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B7E3225F2A6F00E06D5B /* DifficultyType.swift */; };
 		D5E7B7E8225F369A00E06D5B /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E7B7E7225F369A00E06D5B /* Board.swift */; };
+		D5E7B7EE225F530700E06D5B /* CellItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5E7B7EC225F530700E06D5B /* CellItem.xib */; };
+		D5F5D3D4225F5631001DD3A5 /* CellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5D3D3225F5631001DD3A5 /* CellItem.swift */; };
 		D5F9B06B225CA58F0094DD0C /* GameScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F9B06A225CA58F0094DD0C /* GameScreenViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,8 @@
 		CF9BA8C92258E065007E4C6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5E7B7E3225F2A6F00E06D5B /* DifficultyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyType.swift; sourceTree = "<group>"; };
 		D5E7B7E7225F369A00E06D5B /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		D5E7B7EC225F530700E06D5B /* CellItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellItem.xib; sourceTree = "<group>"; };
+		D5F5D3D3225F5631001DD3A5 /* CellItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellItem.swift; sourceTree = "<group>"; };
 		D5F9B06A225CA58F0094DD0C /* GameScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreenViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +70,7 @@
 		CF9BA8B92258E064007E4C6B /* MineSweeper */ = {
 			isa = PBXGroup;
 			children = (
+				D5E7B7EA225F52A300E06D5B /* CellItem */,
 				D5E7B7E7225F369A00E06D5B /* Board.swift */,
 				CF1861D4225F37AD00E3001A /* Cell.swift */,
 				D5F9B06A225CA58F0094DD0C /* GameScreenViewController.swift */,
@@ -80,6 +85,15 @@
 				CF1861D6225F6FD400E3001A /* ScoreScreenViewController.swift */,
 			);
 			path = MineSweeper;
+			sourceTree = "<group>";
+		};
+		D5E7B7EA225F52A300E06D5B /* CellItem */ = {
+			isa = PBXGroup;
+			children = (
+				D5F5D3D3225F5631001DD3A5 /* CellItem.swift */,
+				D5E7B7EC225F530700E06D5B /* CellItem.xib */,
+			);
+			path = CellItem;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +155,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5E7B7EE225F530700E06D5B /* CellItem.xib in Resources */,
 				CF9BA8C82258E065007E4C6B /* LaunchScreen.storyboard in Resources */,
 				CF9BA8C52258E065007E4C6B /* Assets.xcassets in Resources */,
 				CF9BA8C02258E064007E4C6B /* Main.storyboard in Resources */,
@@ -154,6 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5F5D3D4225F5631001DD3A5 /* CellItem.swift in Sources */,
 				CF9BA8BD2258E064007E4C6B /* ViewController.swift in Sources */,
 				CF9BA8C32258E065007E4C6B /* MineSweeper.xcdatamodeld in Sources */,
 				D5F9B06B225CA58F0094DD0C /* GameScreenViewController.swift in Sources */,

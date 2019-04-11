@@ -74,7 +74,7 @@
                                 </state>
                                 <connections>
                                     <action selector="onPlayclicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wg8-Kn-42q"/>
-                                    <segue destination="spS-zV-5cH" kind="presentation" modalTransitionStyle="flipHorizontal" id="FuN-A6-OLN"/>
+                                    <segue destination="spS-zV-5cH" kind="presentation" id="C8A-t4-7cx"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -162,29 +162,82 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u4z-eu-LC0">
-                                <rect key="frame" x="132" y="438" width="128" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="new screen button"/>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="mark test new game screen" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HsJ-fy-eWf">
-                                <rect key="frame" x="76" y="93" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Mines :" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FCQ-NH-fo3">
+                                <rect key="frame" x="261" y="28" width="59" height="38"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="7" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pYZ-NY-9MU">
+                                <rect key="frame" x="316" y="28" width="59" height="38"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="59" id="UR5-gQ-Xsk"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="mark test new game screen" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HsJ-fy-eWf">
+                                <rect key="frame" x="20" y="28" width="172" height="38"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="172" id="JhX-SS-L4j"/>
+                                    <constraint firstAttribute="height" constant="38" id="QBc-J2-x6x"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aLa-SI-6yA">
+                                <rect key="frame" x="16" y="162" width="343" height="485"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="485" id="3AO-JD-bv1"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="tqy-GU-DJX">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CellItem" id="QUl-bF-XXI" customClass="CellItem" customModule="MineSweeper" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="HsJ-fy-eWf" firstAttribute="top" secondItem="Cna-GR-5dD" secondAttribute="bottom" constant="8" id="2AZ-GY-Zox"/>
+                            <constraint firstItem="HsJ-fy-eWf" firstAttribute="centerY" secondItem="pYZ-NY-9MU" secondAttribute="centerY" id="9xJ-Mq-OYm"/>
+                            <constraint firstAttribute="bottom" secondItem="aLa-SI-6yA" secondAttribute="bottom" constant="20" symbolic="YES" id="BIp-y9-rvC"/>
+                            <constraint firstItem="FCQ-NH-fo3" firstAttribute="leading" secondItem="HsJ-fy-eWf" secondAttribute="trailing" constant="69" id="PLt-Q1-iTX"/>
+                            <constraint firstItem="pYZ-NY-9MU" firstAttribute="top" secondItem="HsJ-fy-eWf" secondAttribute="top" id="Ygr-Te-1L7"/>
+                            <constraint firstItem="HsJ-fy-eWf" firstAttribute="centerY" secondItem="FCQ-NH-fo3" secondAttribute="centerY" id="aC3-PD-Yec"/>
+                            <constraint firstItem="aLa-SI-6yA" firstAttribute="leading" secondItem="746-I8-QlC" secondAttribute="leadingMargin" id="gTn-Id-2PP"/>
+                            <constraint firstItem="aLa-SI-6yA" firstAttribute="trailing" secondItem="746-I8-QlC" secondAttribute="trailingMargin" id="jGH-f0-L6J"/>
+                            <constraint firstItem="HsJ-fy-eWf" firstAttribute="leading" secondItem="746-I8-QlC" secondAttribute="leadingMargin" constant="4" id="jQD-A8-jpi"/>
+                            <constraint firstAttribute="trailing" secondItem="pYZ-NY-9MU" secondAttribute="trailing" id="jcx-QK-wCs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FCQ-NH-fo3" secondAttribute="trailing" constant="39" id="u0Y-FK-FJb"/>
+                            <constraint firstItem="pYZ-NY-9MU" firstAttribute="top" secondItem="FCQ-NH-fo3" secondAttribute="top" id="xZG-Iz-gWR"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="TLf-3L-cn9"/>
                     <connections>
-                        <outlet property="someBtn" destination="u4z-eu-LC0" id="MnV-oe-ffm"/>
+                        <outlet property="gameGridView" destination="aLa-SI-6yA" id="gdx-lg-n1K"/>
+                        <outlet property="minesLeftTV" destination="pYZ-NY-9MU" id="Zbu-ln-xpH"/>
                         <outlet property="userNameText" destination="HsJ-fy-eWf" id="Dye-PB-5XF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l6t-hQ-4jY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="905" y="-206"/>
+            <point key="canvasLocation" x="1368.8" y="-196.55172413793105"/>
         </scene>
     </scenes>
     <resources>
