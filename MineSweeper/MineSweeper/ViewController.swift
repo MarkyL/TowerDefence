@@ -8,13 +8,15 @@
 
 import UIKit
 
+
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate{
     
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var difficultyPickerView: UIPickerView!
     @IBOutlet weak var playBtn: UIButton!
     
-  
+    let defaults = UserDefaults.standard
+    
     var difficultyList = [ DifficultyType.EASY, DifficultyType.MEDIUM, DifficultyType.HARD ]
 
     var selectedDifficulty = DifficultyType.MEDIUM
@@ -48,6 +50,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBAction func onPlayclicked(_ sender: Any) {
         //print("selectedDifficulty = " + selectedDifficulty.hashValue)
         if let name = userNameTextField.text {
+            defaults.set(name, forKey: "username")
             print("username = " + name)
         }
         
@@ -61,6 +64,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         // mark test first commit
         
         self.userNameTextField.delegate = self
+        self.userNameTextField.text = defaults.string(forKey: "username")
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

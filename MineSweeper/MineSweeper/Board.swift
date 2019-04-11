@@ -10,6 +10,7 @@ import Foundation
 
 class Board{
     
+    
     var rows : Int
     var cols : Int
     var cellsRevealed : Int
@@ -72,6 +73,7 @@ class Board{
     }
     
     func setFlag(cell : Cell) {
+        
         if !cell.isOpened{
             cell.toggleFlag()
         }
@@ -85,7 +87,7 @@ class Board{
                 let neighbors = cell.neighbors
                 for neighbor in neighbors {
                     if !neighbor.isOpened {
-                        reveal(cell: neighbor)
+                        _ = reveal(cell: neighbor)
                     }
                 }
             }
