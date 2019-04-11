@@ -16,6 +16,10 @@ class GameScreenViewController: UIViewController {
     var recievedUserName : String = "INITIAL TEXT"
     var recievedDifficulty : DifficultyType = DifficultyType.EASY
     
+    var score = 0
+    var isGameOver = false
+    var gameBoard : Board?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,7 +27,51 @@ class GameScreenViewController: UIViewController {
         userNameText.text = recievedUserName
         print(userNameText.text)
         print(recievedDifficulty)
+        
+        initialize()
+        playMineSweeper()
     }
+    
+    func initialize() -> Void {
+        initGameBoard()
+    }
+    
+    func initGameBoard() -> Void {
+        switch (recievedDifficulty) {
+        case DifficultyType.EASY:
+            gameBoard = Board.init(rows: 5, cols: 5, minesAmount: 5)
+        case DifficultyType.MEDIUM:
+            gameBoard = Board.init(rows: 10, cols: 10, minesAmount: 20)
+        case DifficultyType.HARD:
+            gameBoard = Board.init(rows: 10, cols: 10, minesAmount: 30)
+        }
+        // gameBoard.initBoard()
+    }
+    
+    func drawBoard() -> Void {
+        
+    }
+    
+    func playMineSweeper() -> Void {
+        	
+    }
+    
+    func cheatMineSweeper() -> Void {
+        
+    }
+    
+    func onCellShortClick() -> Void {
+        // need row/col values
+        //gameBoard.cellClicked(row,col)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
 
     /*

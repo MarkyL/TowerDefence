@@ -29,11 +29,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         self.view.endEditing(true)
         switch row {
-            case 1:
+            case 0:
             return "Easy"
-            case 2:
+            case 1:
             return "Medium"
-            case 3:
+            case 2:
             return "Hard"
         default:
             return "Easy"
