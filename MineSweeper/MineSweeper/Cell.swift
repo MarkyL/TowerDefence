@@ -49,6 +49,10 @@ class Cell{
         self.hasFlag = !self.hasFlag
     }
     
+    func toggleMine(){
+        self.hasMine = !self.hasMine
+    }
+    
     
     
 }
