@@ -81,6 +81,7 @@ class GameScreenViewController: UIViewController {
             gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
         }
         gameBoard?.initBoard()
+        //gameBoard?.showBombs()
     }
     
     func drawBoard() -> Void {
@@ -107,13 +108,8 @@ class GameScreenViewController: UIViewController {
 extension GameScreenViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.item) // the cell that was clicked!!!
-        let cell = gameGridView.cellForItem(at: indexPath) as! CollectionCellItem
-        cell.setData(imageName: "bomb")
-        //let logicCell = gameBoard?.cellsGrid[indexPath.item/10][indexPath.item%10]
     }
-    
-    
+
 }
 
 extension GameScreenViewController : UICollectionViewDataSource {
@@ -128,11 +124,88 @@ extension GameScreenViewController : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = gameGridView.dequeueReusableCell(withReuseIdentifier: "CollectionCellItem", for: indexPath) as! CollectionCellItem
         
-        cell.setData(imageName: "facingDown")
+        // cell Gestures
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        lpgr.minimumPressDuration = 0.5
+        lpgr.delaysTouchesBegan = true
+        cell.addGestureRecognizer(lpgr)
         
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(handleShortPress))
+        cell.addGestureRecognizer(tgr)
+        //
         
+        guard let board = gameBoard else { return cell }
+        
+        // set cell data (image source)
+        let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % board.cols]
+        
+        if (logicCell.isOpened == true) {
+            if (logicCell.hasMine == true) {
+                cell.setData(imageName: "bomb")
+            } else {
+                cell.setData(imageName: String(logicCell.neighborMineCount))
+            }
+        } else if (logicCell.hasFlag) {
+            cell.setData(imageName: "flagged")
+        } else {
+            cell.setData(imageName: "facingDown")
+        }
+        
+        // reload cell item
+        gameGridView.reloadItems(at: [indexPath])
         return cell
     }
     
+    func handleShortPress(gesture : UITapGestureRecognizer) {
+        print("inside handleShortPress()")
+        guard let board = gameBoard else { return }
+        let p = gesture.location(in: self.gameGridView)
+        
+        if let indexPath = self.gameGridView.indexPathForItem(at: p) {
+            print(indexPath.item) // the cell that was clicked!!!
+            
+            let logicCell = board.cellsGrid[indexPath.item/board.rows][indexPath.item%board.cols]
+            
+            if (logicCell.hasFlag) { return }
+            
+            if (board.reveal(cell: logicCell)) {
+                print("You hit a mine, game over!!!")
+            }
+            
+            DispatchQueue.main.async {
+                self.gameGridView.reloadData()
+            }
+            
+        }
+
+    }
+    
+    func handleLongPress(gesture : UILongPressGestureRecognizer!) {
+        if gesture.state != .ended {
+            return
+        }
+        guard let board = gameBoard else { return }
+        
+        print("inside handleLongPress()")
+        let p = gesture.location(in: self.gameGridView)
+        
+        if let indexPath = self.gameGridView.indexPathForItem(at: p) {
+            print(indexPath.item) // the cell that was clicked!!!
+            
+            let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % gameBoard!.cols]
+            board.setFlag(cell: logicCell)
+            minesLeftTV.text = String(board.minesAmount - board.flagsAmount)
+            
+            DispatchQueue.main.async {
+                self.gameGridView.reloadItems(at: [indexPath])
+            }
+        } else {
+            print("couldn't find index path")
+        }
+        
+        
+        
+    }
+
     
 }

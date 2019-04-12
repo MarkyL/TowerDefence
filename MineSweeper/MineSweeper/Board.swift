@@ -16,11 +16,13 @@ class Board{
     var cellsRevealed : Int
     var cellsGrid : [[Cell]]
     var minesAmount : Int
+    var flagsAmount : Int
     
     init(rows : Int , cols : Int , minesAmount : Int) {
         self.rows = rows
         self.cols = cols
         self.minesAmount = minesAmount
+        self.flagsAmount = 0
         self.cellsRevealed = 0
         self.cellsGrid = Array(repeating: Array(repeating: Cell.init(row: 0, col: 0, hasMine: false), count: cols), count: rows)
     }
@@ -76,6 +78,7 @@ class Board{
         
         if !cell.isOpened{
             cell.toggleFlag()
+            flagsAmount += cell.hasFlag ? 1 : -1
         }
     }
     
