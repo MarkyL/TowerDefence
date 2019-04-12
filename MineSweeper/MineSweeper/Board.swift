@@ -22,7 +22,7 @@ class Board{
         self.cols = cols
         self.minesAmount = minesAmount
         self.cellsRevealed = 0
-        self.cellsGrid = [[Cell]]()
+        self.cellsGrid = Array(repeating: Array(repeating: Cell.init(row: 0, col: 0, hasMine: false), count: cols), count: rows)
     }
     
     
@@ -56,8 +56,8 @@ class Board{
     
     
     func addNeighbors(){
-        for x in 0...self.rows {
-            for y in 0...self.cols {
+        for x in 0...self.rows-1 {
+            for y in 0...self.cols-1 {
                 let cell = self.cellsGrid[x][y]
                 let cellX = cell.row
                 let cellY = cell.col
@@ -97,8 +97,8 @@ class Board{
     }
     
     func showBombs(){
-        for i in 0...self.rows {
-            for j in 0...self.cols {
+        for i in 0...self.rows-1 {
+            for j in 0...self.cols-1 {
                 let cell = self.cellsGrid[i][j]
                 if cell.hasMine && !cell.isOpened {
                     cell.reveal()

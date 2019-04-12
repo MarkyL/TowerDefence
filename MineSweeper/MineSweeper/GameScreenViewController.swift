@@ -50,7 +50,7 @@ class GameScreenViewController: UIViewController {
     }
     
     func setGameBoard() -> Void {
-        self.gameGridView.register(UINib(nibName: "CellItem", bundle: nil), forCellWithReuseIdentifier: "CellItem")
+        self.gameGridView.register(UINib(nibName: "CollectionCellItem", bundle: nil), forCellWithReuseIdentifier: "CollectionCellItem")
         
         let layout = self.gameGridView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0)
@@ -80,7 +80,7 @@ class GameScreenViewController: UIViewController {
         case DifficultyType.HARD:
             gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
         }
-        //gameBoard?.initBoard()
+        gameBoard?.initBoard()
     }
     
     func drawBoard() -> Void {
@@ -108,7 +108,7 @@ extension GameScreenViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.item) // the cell that was clicked!!!
-        let cell = gameGridView.cellForItem(at: indexPath) as! CellItem
+        let cell = gameGridView.cellForItem(at: indexPath) as! CollectionCellItem
         cell.setData(imageName: "bomb")
         //let logicCell = gameBoard?.cellsGrid[indexPath.item/10][indexPath.item%10]
     }
@@ -126,7 +126,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = gameGridView.dequeueReusableCell(withReuseIdentifier: "CellItem", for: indexPath) as! CellItem
+        let cell = gameGridView.dequeueReusableCell(withReuseIdentifier: "CollectionCellItem", for: indexPath) as! CollectionCellItem
         
         cell.setData(imageName: "facingDown")
         
