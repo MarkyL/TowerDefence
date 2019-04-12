@@ -12,21 +12,23 @@ class GameScreenViewController: UIViewController {
 
 
     @IBOutlet weak var userNameText: UITextView!
-    @IBOutlet weak var someBtn: UIButton!
     @IBOutlet weak var minesLeftTV: UITextView!
     @IBOutlet weak var gameGridView: UICollectionView!
+    @IBOutlet weak var scoreTV: UILabel!
     
+    @IBOutlet weak var restartBtn: UIButton!
     
     var recievedUserName : String = "INITIAL TEXT"
     var recievedDifficulty : DifficultyType = DifficultyType.EASY
     
     let defaults = UserDefaults.standard
     
-    let created = Date()
+    var created = Date()
     let formatter = DateFormatter()
     var score = 0
     var isGameOver = false
     var gameBoard : Board?
+    var isFirstMove = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +41,6 @@ class GameScreenViewController: UIViewController {
         initUI()
         initialize()
         setGameBoard()
-        playMineSweeper()
         
         formatter.dateFormat = "dd.MM.yyyy"
     }
@@ -51,9 +52,31 @@ class GameScreenViewController: UIViewController {
     }
     
     func initialize() -> Void {
+        isFirstMove = true
+        isGameOver = false
+        
         initGameBoard()
         if let board = gameBoard {
             minesLeftTV.text = String(board.minesAmount)
+        }
+        score = 0
+        self.scoreTV.text = String(score)
+    }
+    
+    func setScore() -> Void {
+        DispatchQueue.global(qos: .background).async {
+            self.created = Date()
+            var currentTime : Double = 0
+            while (!self.isGameOver && !self.isFirstMove) {
+                let timePassed = Double(Date().timeIntervalSince(self.created).rounded())
+                if (currentTime + 1 < timePassed) {
+                    currentTime += 1 // = timePassed - timePassed % 1
+                    
+                    DispatchQueue.main.async {
+                        self.scoreTV.text = String(timePassed)
+                        }
+                }
+            }
         }
     }
     
@@ -81,35 +104,23 @@ class GameScreenViewController: UIViewController {
     
     func initGameBoard() -> Void {
         switch (recievedDifficulty) {
-        case DifficultyType.EASY:
-            gameBoard = Board(rows: 5, cols: 5, minesAmount: 5)
-        case DifficultyType.MEDIUM:
-            gameBoard = Board(rows: 10, cols: 10, minesAmount: 20)
-        case DifficultyType.HARD:
-            gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
+            case DifficultyType.EASY:
+                gameBoard = Board(rows: 5, cols: 5, minesAmount: 5)
+            case DifficultyType.MEDIUM:
+                gameBoard = Board(rows: 10, cols: 10, minesAmount: 20)
+            case DifficultyType.HARD:
+                gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
         }
         gameBoard?.initBoard()
         //gameBoard?.showBombs()
     }
     
-    func drawBoard() -> Void {
-        
+    @IBAction func onRestartClicked(_ sender: Any) {
+        print("restart clicked")
+        initialize()
+        setGameBoard()
+        gameGridView.reloadData()
     }
-    
-    func playMineSweeper() -> Void {
-        	
-    }
-    
-    func cheatMineSweeper() -> Void {
-        
-    }
-    
-    func onCellShortClick() -> Void {
-        // need row/col values
-        //gameBoard.cellClicked(row,col)
-    }
-    
-
     
 }
 
@@ -162,7 +173,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
         // reload cell item
         gameGridView.reloadItems(at: [indexPath])
         return cell
-    }
+}
     
     func gameOver(isWinner : Bool) {
         
@@ -225,6 +236,11 @@ extension GameScreenViewController : UICollectionViewDataSource {
     
 
     func handleShortPress(gesture : UITapGestureRecognizer) {
+        if (isFirstMove) {
+            isFirstMove = false
+            setScore()
+        }
+        
         print("inside handleShortPress()")
         guard let board = gameBoard else { return }
         let p = gesture.location(in: self.gameGridView)
