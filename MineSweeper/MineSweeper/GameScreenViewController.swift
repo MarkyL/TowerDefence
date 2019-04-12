@@ -164,15 +164,39 @@ extension GameScreenViewController : UICollectionViewDataSource {
         return cell
     }
     
+    func gameOver(isWinner : Bool) {
+        
+        var gameOverMsg : String
+        if isWinner {
+            gameOverMsg = "Congratz You Won The Game!"
+        } else {
+            gameOverMsg = "You Lost , try again!"
+        }
+        
+        // create the alert
+        let alert = UIAlertController(title: "Game Over", message: gameOverMsg, preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+        
+        if isWinner{
+            saveEndGameData()
+        }
+        
 
-    @IBAction func endGameSimulation(_ sender: UIButton) {
+    }
+    
+    func saveEndGameData(){
+        // Rounded time as score
+        let score = Int(Date().timeIntervalSince(created).rounded())
         
-        
-        let score = Double(Date().timeIntervalSince(created).rounded())
-        
+        // Current date
         let date = formatter.string(from: created)
         
-        
+        // User's name
         let name = defaults.string(forKey: "username")
         
         var str = name!+"_"
@@ -180,16 +204,22 @@ extension GameScreenViewController : UICollectionViewDataSource {
         str+=String(date)
         
         guard let arr = defaults.array(forKey: "scoreData") as? [String] else {
-            
             defaults.set([str], forKey: "scoreData")
             return
         }
         
         var scoreData = arr
-    
         scoreData.append(str)
-
         defaults.set(scoreData, forKey: "scoreData")
+    }
+
+    @IBAction func endGameSimulation(_ sender: UIButton) {
+        
+        gameOver(isWinner: true)
+
+        
+        
+
         
     }
     
@@ -207,7 +237,14 @@ extension GameScreenViewController : UICollectionViewDataSource {
             if (logicCell.hasFlag) { return }
             
             if (board.reveal(cell: logicCell)) {
-                print("You hit a mine, game over!!!")
+                print("Game is over - you hit mine")
+                gameOver(isWinner: false)
+            }else{
+                let totalCells = board.rows*board.cols
+                if totalCells-board.minesAmount == board.cellsRevealed {
+                    print("Game is over - you win")
+                    gameOver(isWinner: true)
+                }
             }
             
             DispatchQueue.main.async {

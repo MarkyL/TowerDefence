@@ -89,7 +89,7 @@ class Board{
             if cell.neighborMineCount == 0 {
                 let neighbors = cell.neighbors
                 for neighbor in neighbors {
-                    if !neighbor.isOpened {
+                    if !neighbor.isOpened && !neighbor.hasFlag{
                         _ = reveal(cell: neighbor)
                     }
                 }
