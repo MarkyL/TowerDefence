@@ -65,6 +65,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         self.userNameTextField.delegate = self
         self.userNameTextField.text = defaults.string(forKey: "username")
+        
+        //clear user defaults
+//        if let bundleID = Bundle.main.bundleIdentifier {
+//            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+//        }
+        
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

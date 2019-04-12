@@ -10,14 +10,20 @@ import UIKit
 
 class GameScreenViewController: UIViewController {
 
+
     @IBOutlet weak var userNameText: UITextView!
     @IBOutlet weak var someBtn: UIButton!
     @IBOutlet weak var minesLeftTV: UITextView!
     @IBOutlet weak var gameGridView: UICollectionView!
     
+    
     var recievedUserName : String = "INITIAL TEXT"
     var recievedDifficulty : DifficultyType = DifficultyType.EASY
     
+    let defaults = UserDefaults.standard
+    
+    let created = Date()
+    let formatter = DateFormatter()
     var score = 0
     var isGameOver = false
     var gameBoard : Board?
@@ -34,6 +40,8 @@ class GameScreenViewController: UIViewController {
         initialize()
         setGameBoard()
         playMineSweeper()
+        
+        formatter.dateFormat = "dd.MM.yyyy"
     }
     
     func initUI() -> Void {
@@ -132,6 +140,34 @@ extension GameScreenViewController : UICollectionViewDataSource {
         
         
         return cell
+    }
+    
+    @IBAction func endGameSimulation(_ sender: UIButton) {
+        
+        
+        let score = Double(Date().timeIntervalSince(created).rounded())
+        
+        let date = formatter.string(from: created)
+        
+        
+        let name = defaults.string(forKey: "username")
+        
+        var str = name!+"_"
+        str+=String(score)+"_"
+        str+=String(date)
+        
+        guard let arr = defaults.array(forKey: "scoreData") as? [String] else {
+            
+            defaults.set([str], forKey: "scoreData")
+            return
+        }
+        
+        var scoreData = arr
+    
+        scoreData.append(str)
+
+        defaults.set(scoreData, forKey: "scoreData")
+        
     }
     
     

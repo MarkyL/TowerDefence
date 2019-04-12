@@ -11,6 +11,7 @@
 		CF1861D7225F6FD400E3001A /* ScoreScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1861D6225F6FD400E3001A /* ScoreScreenViewController.swift */; };
 		CF1861DE22607BCE00E3001A /* CollectionCellItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1861DC22607BCE00E3001A /* CollectionCellItem.swift */; };
 		CF1861DF22607BCE00E3001A /* CollectionCellItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = CF1861DD22607BCE00E3001A /* CollectionCellItem.xib */; };
+		CF1861E62260956800E3001A /* MyTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1861E52260956800E3001A /* MyTableCell.swift */; };
 		CF9BA8BB2258E064007E4C6B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9BA8BA2258E064007E4C6B /* AppDelegate.swift */; };
 		CF9BA8BD2258E064007E4C6B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9BA8BC2258E064007E4C6B /* ViewController.swift */; };
 		CF9BA8C02258E064007E4C6B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF9BA8BE2258E064007E4C6B /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 		CF1861D6225F6FD400E3001A /* ScoreScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreScreenViewController.swift; sourceTree = "<group>"; };
 		CF1861DC22607BCE00E3001A /* CollectionCellItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionCellItem.swift; sourceTree = "<group>"; };
 		CF1861DD22607BCE00E3001A /* CollectionCellItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionCellItem.xib; sourceTree = "<group>"; };
+		CF1861E52260956800E3001A /* MyTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTableCell.swift; sourceTree = "<group>"; };
 		CF9BA8B72258E064007E4C6B /* MineSweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MineSweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF9BA8BA2258E064007E4C6B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CF9BA8BC2258E064007E4C6B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				CF9BA8C12258E065007E4C6B /* MineSweeper.xcdatamodeld */,
 				D5E7B7E3225F2A6F00E06D5B /* DifficultyType.swift */,
 				CF1861D6225F6FD400E3001A /* ScoreScreenViewController.swift */,
+				CF1861E52260956800E3001A /* MyTableCell.swift */,
 			);
 			path = MineSweeper;
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 			files = (
 				CF9BA8BD2258E064007E4C6B /* ViewController.swift in Sources */,
 				CF1861DE22607BCE00E3001A /* CollectionCellItem.swift in Sources */,
+				CF1861E62260956800E3001A /* MyTableCell.swift in Sources */,
 				CF9BA8C32258E065007E4C6B /* MineSweeper.xcdatamodeld in Sources */,
 				D5F9B06B225CA58F0094DD0C /* GameScreenViewController.swift in Sources */,
 				D5E7B7E4225F2A6F00E06D5B /* DifficultyType.swift in Sources */,

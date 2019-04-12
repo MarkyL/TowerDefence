@@ -10,50 +10,49 @@ import UIKit
 
 class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITableViewDataSource{
 
-    @IBOutlet weak var tableView: UITableView!
+
+    // Don't forget to enter this in IB also
+    let cellReuseIdentifier = "cell"
     
     let defaults = UserDefaults.standard
+    //var rowCount : Int = 0
+    var scoreData : [String] = []
     
-    // cell reuse id (cells that scroll out of view can be reused)
-    let cellReuseIdentifier = "cell"
+    @IBOutlet var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        // Register the table view cell class and its reuse id
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
-        
-        // (optional) include this line if you want to remove the extra empty cell divider lines
-        // self.tableView.tableFooterView = UIView()
-        
-        // This view controller itself will provide the delegate methods and row data for the table view.
         tableView.delegate = self
         tableView.dataSource = self
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        //self.rowCount = defaults.integer(forKey: "rowCount")
+        
+        let arr = defaults.array(forKey: "scoreData") as? [String]
+        if arr != nil{
+            self.scoreData = arr!
+        }
+        
+    
     }
     
     // number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.scoreData.count
     }
-    
-    
     
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // create a new cell if needed or reuse an old one
-        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as UITableViewCell!
+        let cell:MyTableCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MyTableCell
         
-        
-        // set the text from the data model
-        let score = "                    "+"2"
-        cell.textLabel?.text = defaults.string(forKey: "username")!+score
+        let scoreStr = self.scoreData[indexPath.row]
+        let scoreArr = scoreStr.components(separatedBy: "_")
+        if scoreArr.count == 3 {
+            cell.userNamelbl.text = scoreArr[0]
+            cell.scorelbl.text = scoreArr[1]
+            cell.timelbl.text = scoreArr[2]
+        }
         
         return cell
     }
@@ -64,14 +63,6 @@ class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITable
     }
 }
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 
