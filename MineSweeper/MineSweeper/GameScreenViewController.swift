@@ -143,7 +143,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = gameGridView.dequeueReusableCell(withReuseIdentifier: "CollectionCellItem", for: indexPath) as! CollectionCellItem
         
-        // cell Gestures
+        // cell Gestures & Taps
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         lpgr.minimumPressDuration = 0.5
         lpgr.delaysTouchesBegan = true
@@ -160,12 +160,14 @@ extension GameScreenViewController : UICollectionViewDataSource {
         
         if (logicCell.isOpened == true) {
             if (logicCell.hasMine == true) {
-                cell.setData(imageName: "bomb")
+                cell.setData(imageName: "boom")
             } else {
                 cell.setData(imageName: String(logicCell.neighborMineCount))
             }
         } else if (logicCell.hasFlag) {
             cell.setData(imageName: "flagged")
+        } else if (logicCell.hasMine && isGameOver) {
+            cell.setData(imageName: "bomb")
         } else {
             cell.setData(imageName: "facingDown")
         }
@@ -176,7 +178,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
 }
     
     func gameOver(isWinner : Bool) {
-        
+        isGameOver = true
         var gameOverMsg : String
         if isWinner {
             gameOverMsg = "Congratz You Won The Game!"
@@ -223,17 +225,6 @@ extension GameScreenViewController : UICollectionViewDataSource {
         scoreData.append(str)
         defaults.set(scoreData, forKey: "scoreData")
     }
-
-    @IBAction func endGameSimulation(_ sender: UIButton) {
-        
-        gameOver(isWinner: true)
-
-        
-        
-
-        
-    }
-    
 
     func handleShortPress(gesture : UITapGestureRecognizer) {
         if (isFirstMove) {
