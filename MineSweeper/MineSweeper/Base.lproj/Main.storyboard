@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G22010" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="D7D-5Q-5tN">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="D7D-5Q-5tN">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -138,7 +137,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BZv-7M-rhq" id="D3z-LN-S01">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="39"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="39.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GAc-em-541">
@@ -238,16 +237,6 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9m-9e-qPy">
-                                <rect key="frame" x="156" y="120" width="63" height="80"/>
-                                <state key="normal" image="sun-smile">
-                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="onRestartClicked:" destination="spS-zV-5cH" eventType="touchUpInside" id="Hcb-ml-My5"/>
-                                </connections>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Mines :" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FCQ-NH-fo3">
                                 <rect key="frame" x="267" y="128" width="59" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -286,12 +275,22 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9m-9e-qPy">
+                                <rect key="frame" x="156" y="129" width="63" height="60"/>
+                                <state key="normal" image="sun-smile">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="onRestartClicked:" destination="spS-zV-5cH" eventType="touchUpInside" id="Hcb-ml-My5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="d9m-9e-qPy" firstAttribute="top" secondItem="KOj-1B-3Bk" secondAttribute="bottom" constant="50" id="A1G-FE-bAS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="d9m-9e-qPy" secondAttribute="trailing" constant="140" id="H4C-3A-r87"/>
                             <constraint firstItem="KOj-1B-3Bk" firstAttribute="leading" secondItem="746-I8-QlC" secondAttribute="leadingMargin" id="SmH-rJ-Sg1"/>
+                            <constraint firstItem="d9m-9e-qPy" firstAttribute="top" secondItem="KOj-1B-3Bk" secondAttribute="bottom" constant="5" id="qhJ-67-TZN"/>
                             <constraint firstItem="KOj-1B-3Bk" firstAttribute="top" secondItem="Cna-GR-5dD" secondAttribute="bottom" constant="20" id="rI5-sa-wgr"/>
                             <constraint firstItem="d9m-9e-qPy" firstAttribute="leading" secondItem="746-I8-QlC" secondAttribute="leadingMargin" constant="140" id="tJW-MG-OAB"/>
                         </constraints>
@@ -307,12 +306,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l6t-hQ-4jY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1162" y="-206"/>
+            <point key="canvasLocation" x="1160.8" y="-206.44677661169416"/>
         </scene>
     </scenes>
     <resources>
         <image name="logo" width="322" height="157"/>
-        <image name="sun-smile" width="80" height="80"/>
+        <image name="sun-smile" width="60" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ttY-IE-9BN"/>
