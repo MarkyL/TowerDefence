@@ -16,71 +16,58 @@ class GameScreenViewController: UIViewController {
     @IBOutlet weak var minesLeftTV: UITextView!
     @IBOutlet weak var gameGridView: UICollectionView!
     @IBOutlet weak var scoreTV: UILabel!
-    
     @IBOutlet weak var restartBtn: UIButton!
     
-    var recievedUserName : String = "INITIAL TEXT"
+    var recievedUserName : String = ""
     var recievedDifficulty : DifficultyType = DifficultyType.EASY
     
-    let defaults = UserDefaults.standard
-    
     var created = Date()
-    let formatter = DateFormatter()
     var score = 0
-    var isGameOver = false
+    var isGameOver = false, isFirstMove = true
     var gameBoard : Board?
-    var isFirstMove = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        
-        print(userNameText.text)
         print(recievedDifficulty)
         
-        initUI()
-        initialize()
-        setGameBoard()
-        
-        formatter.dateFormat = "dd.MM.yyyy"
-    }
-    
-    func initUI() -> Void {
         userNameText.text = recievedUserName
-        self.gameGridView.delegate = self
         self.gameGridView.dataSource = self
+        
+        initialize()
     }
     
+    // Initialazation of viewController attributes and game board logic.
     func initialize() -> Void {
+        restartBtn.setImage(UIImage(named: "sun-smile"), for: [])
         isFirstMove = true
         isGameOver = false
+        score = 0
+        self.scoreTV.text = String(score)
         
         initGameBoard()
         if let board = gameBoard {
             minesLeftTV.text = String(board.minesAmount)
         }
-        score = 0
-        self.scoreTV.text = String(score)
+        setGameBoard()
     }
     
-    func setScore() -> Void {
-        DispatchQueue.global(qos: .background).async {
-            self.created = Date()
-            var currentTime : Double = 0
-            while (!self.isGameOver && !self.isFirstMove) {
-                let timePassed = Double(Date().timeIntervalSince(self.created).rounded())
-                if (currentTime + 1 < timePassed) {
-                    currentTime += 1 // = timePassed - timePassed % 1
-                    
-                    DispatchQueue.main.async {
-                        self.scoreTV.text = String(timePassed)
-                        }
-                }
-            }
+    // Initialazation of game board size and mines.
+    func initGameBoard() -> Void {
+        switch recievedDifficulty {
+            case DifficultyType.EASY:
+                gameBoard = Board(rows: 5, cols: 5, minesAmount: 5)
+            case DifficultyType.MEDIUM:
+                gameBoard = Board(rows: 10, cols: 10, minesAmount: 20)
+            case DifficultyType.HARD:
+                gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
         }
+        gameBoard?.initBoard()
+        // use show bombs for QA testing
+        //gameBoard?.showBombs()
     }
     
+    // UI of Collection and Cell view adjustments to the game difficulty.
     func setGameBoard() -> Void {
         self.gameGridView.register(UINib(nibName: "CollectionCellItem", bundle: nil), forCellWithReuseIdentifier: "CollectionCellItem")
         
@@ -91,45 +78,44 @@ class GameScreenViewController: UIViewController {
         if let board = gameBoard {
             let boardSize = board.rows
             print("boardSize = " + String(boardSize))
-            if (boardSize == 5) {
-            layout.itemSize = CGSize(
-                width: (self.gameGridView.frame.size.width)/5,
-                height: (self.gameGridView.frame.size.height)/5)
-            } else if (boardSize == 10) {
+            if boardSize == 5 {
                 layout.itemSize = CGSize(
-                    width: (self.gameGridView.frame.size.width)/10,
-                    height: (self.gameGridView.frame.size.height)/10)
+                    width: self.gameGridView.frame.size.width / 5,
+                    height: self.gameGridView.frame.size.height / 5)
+            } else if boardSize == 10 {
+                layout.itemSize = CGSize(
+                    width: self.gameGridView.frame.size.width / 10,
+                    height: self.gameGridView.frame.size.height / 10)
             }
         }
     }
     
-    func initGameBoard() -> Void {
-        switch (recievedDifficulty) {
-            case DifficultyType.EASY:
-                gameBoard = Board(rows: 5, cols: 5, minesAmount: 5)
-            case DifficultyType.MEDIUM:
-                gameBoard = Board(rows: 10, cols: 10, minesAmount: 20)
-            case DifficultyType.HARD:
-                gameBoard = Board(rows: 10, cols: 10, minesAmount: 30)
+    // Updating the score data in an Async task while drawing it on Main thread.
+    func startScoreTracking() -> Void {
+        DispatchQueue.global(qos: .background).async {
+            self.created = Date()
+            var currentTime : Double = 0
+            
+            while !self.isGameOver && !self.isFirstMove {
+                let timePassed = Double(Date().timeIntervalSince(self.created).rounded())
+                
+                if currentTime + 1 < timePassed {
+                    currentTime += 1
+                    
+                    DispatchQueue.main.async {
+                        self.scoreTV.text = String(timePassed)
+                    }
+                }
+            }
         }
-        gameBoard?.initBoard()
-        //gameBoard?.showBombs()
     }
     
     @IBAction func onRestartClicked(_ sender: Any) {
-        print("restart clicked")
         initialize()
         setGameBoard()
         gameGridView.reloadData()
     }
     
-}
-
-extension GameScreenViewController : UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    }
-
 }
 
 extension GameScreenViewController : UICollectionViewDataSource {
@@ -145,65 +131,82 @@ extension GameScreenViewController : UICollectionViewDataSource {
         let cell = gameGridView.dequeueReusableCell(withReuseIdentifier: "CollectionCellItem", for: indexPath) as! CollectionCellItem
         
         // cell Gestures & Taps
-        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        lpgr.minimumPressDuration = 0.5
-        lpgr.delaysTouchesBegan = true
-        cell.addGestureRecognizer(lpgr)
-        
-        let tgr = UITapGestureRecognizer(target: self, action: #selector(handleShortPress))
-        cell.addGestureRecognizer(tgr)
-        //
-        
-        guard let board = gameBoard else { return cell }
+        setCellClickListeners(cell: cell)
         
         // set cell data (image source)
+        guard let board = gameBoard else { print("gameBoard is nil"); return cell }
         let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % board.cols]
-        
-        if (logicCell.isOpened == true) {
-            if (logicCell.hasMine == true) {
-                cell.setData(imageName: "boom")
-            } else {
-                cell.setData(imageName: String(logicCell.neighborMineCount))
-            }
-        } else if (logicCell.hasFlag) {
-            cell.setData(imageName: "flagged")
-        } else if (logicCell.hasMine && isGameOver) {
-            cell.setData(imageName: "bomb")
-        } else {
-            cell.setData(imageName: "facingDown")
-        }
+        setCellData(uiCell : cell, logicCell : logicCell)
         
         // reload cell item
         gameGridView.reloadItems(at: [indexPath])
         return cell
 }
     
+    func setCellClickListeners(cell : CollectionCellItem) -> Void {
+        // long press gesture
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+        lpgr.minimumPressDuration = 0.5
+        lpgr.delaysTouchesBegan = true
+        cell.addGestureRecognizer(lpgr)
+        
+        // short press gesture
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(handleShortPress))
+        cell.addGestureRecognizer(tgr)
+    }
+    
+    /// Sets the correct data (image source) to the UI cell according to the data of the
+    /// Logic cell that is retrieved.
+    /// - Parameters:
+    ///   - uiCell: the UI cell of the gameBoard that is handled
+    ///   - logicCell: the Logic cell of the gameGridView that is handled
+    func setCellData(uiCell : CollectionCellItem, logicCell : Cell) -> Void {
+        if logicCell.isOpened == true {
+            if logicCell.hasMine == true {
+                uiCell.setData(imageName: "boom")
+            } else {
+                uiCell.setData(imageName: String(logicCell.neighborMineCount))
+            }
+        } else if logicCell.hasFlag {
+            uiCell.setData(imageName: "flagged")
+        } else if logicCell.hasMine && isGameOver {
+            uiCell.setData(imageName: "bomb")
+        } else {
+            uiCell.setData(imageName: "facingDown")
+        }
+    }
+    
+    // handle end game logic and show alert.
     func gameOver(isWinner : Bool) {
         isGameOver = true
-        var gameOverMsg : String
+        var gameOverMsg : String , gameOverTitle : String
         if isWinner {
-            gameOverMsg = "Congratz You Won The Game!"
+            gameOverTitle = "Good game"
+            gameOverMsg = "Congratz you won the game!"
+            restartBtn.setImage(UIImage(named: "sun-smile"), for: [])
+            saveEndGameData()
         } else {
-            gameOverMsg = "You Lost , try again!"
+            gameOverTitle = "Game over"
+            gameOverMsg = "You lost, try again!"
+            restartBtn.setImage(UIImage(named: "sun-sad"), for: [])
         }
         
         // create the alert
-        let alert = UIAlertController(title: "Game Over", message: gameOverMsg, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: gameOverTitle, message: gameOverMsg, preferredStyle: UIAlertControllerStyle.alert)
         
         // add the actions (buttons)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         
         // show the alert
         self.present(alert, animated: true, completion: nil)
-        
-        if isWinner{
-            saveEndGameData()
-        }
-        
-
     }
     
     func saveEndGameData(){
+        let defaults = UserDefaults.standard
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy'T'HH:mm"
+        
         // Rounded time as score
         let score = Int(Date().timeIntervalSince(created).rounded())
         
@@ -227,67 +230,65 @@ extension GameScreenViewController : UICollectionViewDataSource {
         defaults.set(scoreData, forKey: "scoreData")
     }
 
+    // Logic of game board cell short click.
     func handleShortPress(gesture : UITapGestureRecognizer) {
-        if (isFirstMove) {
+        if isGameOver { return }
+        if isFirstMove {
             isFirstMove = false
-            setScore()
+            startScoreTracking()
         }
         
-        print("inside handleShortPress()")
-        guard let board = gameBoard else { return }
+        guard let board = gameBoard else { print("board is nil"); return }
         let p = gesture.location(in: self.gameGridView)
         
         if let indexPath = self.gameGridView.indexPathForItem(at: p) {
-            print(indexPath.item) // the cell that was clicked!!!
+            print(indexPath.item) // the cell that was clicked.
             
-            let logicCell = board.cellsGrid[indexPath.item/board.rows][indexPath.item%board.cols]
+            let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % board.cols]
             
             if (logicCell.hasFlag) { return }
             
             if (board.reveal(cell: logicCell)) {
-                print("Game is over - you hit mine")
+                // Game is over - you hit a mine!
                 gameOver(isWinner: false)
-            }else{
-                let totalCells = board.rows*board.cols
-                if totalCells-board.minesAmount == board.cellsRevealed {
-                    print("Game is over - you win")
+            } else {
+                let totalCells = board.rows * board.cols
+                if totalCells - board.minesAmount == board.cellsRevealed {
+                    // Game is over - you win!
                     gameOver(isWinner: true)
                 }
             }
             
+            // update the data of the board after a move was made.
             DispatchQueue.main.async {
                 self.gameGridView.reloadData()
             }
-            
         }
-
     }
     
+    // Logic of game board cell long click.
     func handleLongPress(gesture : UILongPressGestureRecognizer!) {
-        if gesture.state != .ended {
+        if gesture.state != .ended || isGameOver {
             return
         }
+        
         guard let board = gameBoard else { return }
         
-        print("inside handleLongPress()")
         let p = gesture.location(in: self.gameGridView)
         
         if let indexPath = self.gameGridView.indexPathForItem(at: p) {
-            print(indexPath.item) // the cell that was clicked!!!
+            print(indexPath.item) // the cell that was clicked!
             
             let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % gameBoard!.cols]
             board.setFlag(cell: logicCell)
             minesLeftTV.text = String(board.minesAmount - board.flagsAmount)
             
+            // redraw cell's view.
             DispatchQueue.main.async {
                 self.gameGridView.reloadItems(at: [indexPath])
             }
         } else {
             print("couldn't find index path")
         }
-        
-        
-        
     }
-    
 }
