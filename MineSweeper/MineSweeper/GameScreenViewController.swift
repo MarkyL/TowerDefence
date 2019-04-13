@@ -11,7 +11,8 @@ import UIKit
 class GameScreenViewController: UIViewController {
 
 
-    @IBOutlet weak var userNameText: UITextView!
+
+    @IBOutlet weak var userNameText: UILabel!
     @IBOutlet weak var minesLeftTV: UITextView!
     @IBOutlet weak var gameGridView: UICollectionView!
     @IBOutlet weak var scoreTV: UILabel!
