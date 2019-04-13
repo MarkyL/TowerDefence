@@ -48,7 +48,6 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     }
     
     @IBAction func onPlayclicked(_ sender: Any) {
-        //print("selectedDifficulty = " + selectedDifficulty.hashValue)
         if let name = userNameTextField.text {
             defaults.set(name, forKey: "username")
             print("username = " + name)
@@ -56,21 +55,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
     }
 
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        // mark test first commit
-        
         self.userNameTextField.delegate = self
         self.userNameTextField.text = defaults.string(forKey: "username")
-        
-        //clear user defaults
-//        if let bundleID = Bundle.main.bundleIdentifier {
-//            UserDefaults.standard.removePersistentDomain(forName: bundleID)
-//        }
-        
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
