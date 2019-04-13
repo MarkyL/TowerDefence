@@ -72,22 +72,46 @@
 		CF9BA8B92258E064007E4C6B /* MineSweeper */ = {
 			isa = PBXGroup;
 			children = (
-				D5E7B7EA225F52A300E06D5B /* CellItem */,
-				D5E7B7E7225F369A00E06D5B /* Board.swift */,
-				CF1861D4225F37AD00E3001A /* Cell.swift */,
-				D5F9B06A225CA58F0094DD0C /* GameScreenViewController.swift */,
+				CFB0476C2261F175007BF9F7 /* ViewControllers */,
+				CFB0476B2261F15D007BF9F7 /* Customized */,
+				CFB0476A2261F148007BF9F7 /* Model */,
 				CF9BA8BA2258E064007E4C6B /* AppDelegate.swift */,
-				CF9BA8BC2258E064007E4C6B /* ViewController.swift */,
 				CF9BA8BE2258E064007E4C6B /* Main.storyboard */,
 				CF9BA8C42258E065007E4C6B /* Assets.xcassets */,
 				CF9BA8C62258E065007E4C6B /* LaunchScreen.storyboard */,
 				CF9BA8C92258E065007E4C6B /* Info.plist */,
 				CF9BA8C12258E065007E4C6B /* MineSweeper.xcdatamodeld */,
-				D5E7B7E3225F2A6F00E06D5B /* DifficultyType.swift */,
-				CF1861D6225F6FD400E3001A /* ScoreScreenViewController.swift */,
-				CF1861E52260956800E3001A /* MyTableCell.swift */,
 			);
 			path = MineSweeper;
+			sourceTree = "<group>";
+		};
+		CFB0476A2261F148007BF9F7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D5E7B7E3225F2A6F00E06D5B /* DifficultyType.swift */,
+				CF1861D4225F37AD00E3001A /* Cell.swift */,
+				D5E7B7E7225F369A00E06D5B /* Board.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CFB0476B2261F15D007BF9F7 /* Customized */ = {
+			isa = PBXGroup;
+			children = (
+				D5E7B7EA225F52A300E06D5B /* CellItem */,
+				CF1861E52260956800E3001A /* MyTableCell.swift */,
+			);
+			name = Customized;
+			sourceTree = "<group>";
+		};
+		CFB0476C2261F175007BF9F7 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CF9BA8BC2258E064007E4C6B /* ViewController.swift */,
+				CF1861D6225F6FD400E3001A /* ScoreScreenViewController.swift */,
+				D5F9B06A225CA58F0094DD0C /* GameScreenViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 		D5E7B7EA225F52A300E06D5B /* CellItem */ = {

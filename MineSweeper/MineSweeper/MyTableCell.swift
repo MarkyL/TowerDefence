@@ -11,8 +11,8 @@ import Foundation
 import UIKit
 class MyTableCell: UITableViewCell {
 
-    @IBOutlet weak var scorelbl: UILabel!
-    @IBOutlet weak var timelbl: UILabel!
+
     @IBOutlet weak var userNamelbl: UILabel!
-    
+    @IBOutlet weak var scorelbl: UILabel!
+    @IBOutlet weak var datelbl: UILabel!
 }

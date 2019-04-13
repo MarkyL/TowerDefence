@@ -17,8 +17,8 @@ class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITable
     let defaults = UserDefaults.standard
     //var rowCount : Int = 0
     var scoreData : [String] = []
-    
-    @IBOutlet var tableView: UITableView!
+
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +51,7 @@ class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITable
         if scoreArr.count == 3 {
             cell.userNamelbl.text = scoreArr[0]
             cell.scorelbl.text = scoreArr[1]
-            cell.timelbl.text = scoreArr[2]
+            cell.datelbl.text = scoreArr[2]
         }
         
         return cell
