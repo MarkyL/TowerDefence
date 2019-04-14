@@ -8,14 +8,12 @@
 
 import UIKit
 
-class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITableViewDataSource{
+class ScoreScreenViewController: UIViewController, UITableViewDataSource{
 
 
     // Don't forget to enter this in IB also
     let cellReuseIdentifier = "cell"
     
-    let defaults = UserDefaults.standard
-    //var rowCount : Int = 0
     var scoreData : [String] = []
 
     @IBOutlet weak var tableView: UITableView!
@@ -23,17 +21,10 @@ class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.delegate = self
         tableView.dataSource = self
         
-        //self.rowCount = defaults.integer(forKey: "rowCount")
-        
-        let arr = defaults.array(forKey: "scoreData") as? [String]
-        if arr != nil{
-            self.scoreData = arr!
-        }
-        
-    
+        guard let arr = UserDefaults.standard.array(forKey: "scoreData") as? [String] else { return }
+        self.scoreData = arr
     }
     
     // number of rows in table view
@@ -44,7 +35,7 @@ class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITable
     // create a cell for each table view row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell:MyTableCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MyTableCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MyTableCell
         
         let scoreStr = self.scoreData[self.scoreData.count-1-indexPath.row]
         let scoreArr = scoreStr.components(separatedBy: "_")
@@ -56,13 +47,4 @@ class ScoreScreenViewController: UIViewController , UITableViewDelegate, UITable
         
         return cell
     }
-    
-    // method to run when table view cell is tapped
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You tapped cell number \(indexPath.row).")
-    }
 }
-
-
-
-

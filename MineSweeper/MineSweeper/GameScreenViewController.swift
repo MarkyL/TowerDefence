@@ -10,12 +10,11 @@ import UIKit
 
 class GameScreenViewController: UIViewController {
 
-
-
     @IBOutlet weak var userNameText: UILabel!
-    @IBOutlet weak var minesLeftTV: UITextView!
+    @IBOutlet weak var minesLeftText: UILabel!
+    @IBOutlet weak var scoreText: UILabel!
+    
     @IBOutlet weak var gameGridView: UICollectionView!
-    @IBOutlet weak var scoreTV: UILabel!
     @IBOutlet weak var restartBtn: UIButton!
     
     var recievedUserName : String = ""
@@ -43,11 +42,11 @@ class GameScreenViewController: UIViewController {
         isFirstMove = true
         isGameOver = false
         score = 0
-        self.scoreTV.text = String(score)
+        self.scoreText.text = String(score)
         
         initGameBoard()
         if let board = gameBoard {
-            minesLeftTV.text = String(board.minesAmount)
+            minesLeftText.text = String(board.minesAmount)
         }
         setGameBoard()
     }
@@ -103,7 +102,7 @@ class GameScreenViewController: UIViewController {
                     currentTime += 1
                     
                     DispatchQueue.main.async {
-                        self.scoreTV.text = String(timePassed)
+                        self.scoreText.text = String(timePassed)
                     }
                 }
             }
@@ -205,7 +204,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
         let defaults = UserDefaults.standard
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy'T'HH:mm"
+        formatter.dateFormat = "dd.MM.yyyy"
         
         // Rounded time as score
         let score = Int(Date().timeIntervalSince(created).rounded())
@@ -281,7 +280,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
             
             let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % gameBoard!.cols]
             board.setFlag(cell: logicCell)
-            minesLeftTV.text = String(board.minesAmount - board.flagsAmount)
+            minesLeftText.text = String(board.minesAmount - board.flagsAmount)
             
             // redraw cell's view.
             DispatchQueue.main.async {
