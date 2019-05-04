@@ -37,12 +37,13 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource{
         
         let cell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MyTableCell
         
-        let scoreStr = self.scoreData[self.scoreData.count-1-indexPath.row]
+        let scoreStr = self.scoreData[indexPath.row]
         let scoreArr = scoreStr.components(separatedBy: "_")
-        if scoreArr.count == 3 {
-            cell.userNamelbl.text = scoreArr[0]
-            cell.scorelbl.text = scoreArr[1]
-            cell.datelbl.text = scoreArr[2]
+        if scoreArr.count == 4 {
+            cell.difficultylbl.text = scoreArr[0]
+            cell.userNamelbl.text = scoreArr[1]
+            cell.scorelbl.text = scoreArr[2]
+            cell.datelbl.text = scoreArr[3]
         }
         
         return cell

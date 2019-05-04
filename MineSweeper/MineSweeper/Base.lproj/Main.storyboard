@@ -113,7 +113,7 @@
         <!--ScoreView-->
         <scene sceneID="Mas-4L-h8N">
             <objects>
-                <viewController title="ScoreView" id="XTl-m2-fJJ" customClass="ScoreScreenViewController" customModule="MineSweeper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScoreView" title="ScoreView" id="XTl-m2-fJJ" customClass="ScoreScreenViewController" customModule="MineSweeper" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ezZ-e8-zdP"/>
                         <viewControllerLayoutGuide type="bottom" id="Qc1-S3-rjP"/>
@@ -172,9 +172,10 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="datelbl" destination="lMW-tT-QXk" id="ufj-cj-Vgz"/>
-                                            <outlet property="scorelbl" destination="jUp-JK-sRQ" id="Kgf-Ge-7rC"/>
-                                            <outlet property="userNamelbl" destination="GAc-em-541" id="baX-DQ-pq0"/>
+                                            <outlet property="datelbl" destination="1qn-6Z-3oJ" id="HA9-nd-8iB"/>
+                                            <outlet property="difficultylbl" destination="GAc-em-541" id="B3N-z5-OEX"/>
+                                            <outlet property="scorelbl" destination="lMW-tT-QXk" id="SZ0-bS-Ghv"/>
+                                            <outlet property="userNamelbl" destination="jUp-JK-sRQ" id="lNJ-T8-FuV"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -329,7 +330,7 @@
         <image name="sun-smile" width="80" height="80"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ttY-IE-9BN"/>
+        <segue reference="d0c-2j-R8W"/>
         <segue reference="4UN-fz-nGk"/>
     </inferredMetricsTieBreakers>
 </document>
