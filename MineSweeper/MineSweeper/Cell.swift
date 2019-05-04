@@ -20,7 +20,7 @@ class Cell{
     var neighborMineCount : Int
     var neighbors : [Cell]
     
-    init(row : Int,col:Int,hasMine : Bool) {
+    init(row : Int, col: Int, hasMine : Bool) {
         self.col = col
         self.row = row
         self.isOpened = false
@@ -34,10 +34,9 @@ class Cell{
     func addNeighbor(neighbor : Cell){
         self.neighbors.append(neighbor)
         if neighbor.hasMine {
-            neighborMineCount+=1
+            neighborMineCount += 1
         }
     }
-    
     
     // Reveal this cell
     func reveal() {
@@ -49,14 +48,11 @@ class Cell{
         self.hasFlag = !self.hasFlag
     }
     
-    func toggleMine(){
+    func toggleMine() {
         self.hasMine = !self.hasMine
     }
     
     func getIsOpened() -> Bool {
         return isOpened
     }
-    
 }
-
-

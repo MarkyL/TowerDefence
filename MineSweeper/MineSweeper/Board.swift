@@ -10,7 +10,6 @@ import Foundation
 
 class Board{
     
-    
     var rows : Int
     var cols : Int
     var cellsRevealed : Int
@@ -27,9 +26,7 @@ class Board{
         self.cellsGrid = Array(repeating: Array(repeating: Cell.init(row: 0, col: 0, hasMine: false), count: cols), count: rows)
     }
     
-    
     func initBoard(){
-        
         for i in 0...self.rows - 1 {
             for j in 0...self.cols - 1 {
                 self.cellsGrid[i][j] = Cell(row: i, col: j, hasMine: false)
@@ -37,10 +34,8 @@ class Board{
         }
         placeMines()
         addNeighbors()
-        
     }
     
-
     func placeMines(){
         var minesCounter = 0
         var row = 0
@@ -49,13 +44,12 @@ class Board{
             row = Int(arc4random_uniform(UInt32(self.rows)))
             col = Int(arc4random_uniform(UInt32(self.cols)))
             let c = self.cellsGrid[row][col]
-            if !c.hasMine{
+            if !c.hasMine {
                c.toggleMine()
-               minesCounter+=1
+               minesCounter += 1
             }
         }
     }
-    
     
     func addNeighbors(){
         for x in 0...self.rows-1 {
@@ -63,8 +57,8 @@ class Board{
                 let cell = self.cellsGrid[x][y]
                 let cellX = cell.row
                 let cellY = cell.col
-                for i in cellX-1...cellX+1 {
-                    for j in cellY-1...cellY+1 {
+                for i in cellX - 1...cellX + 1 {
+                    for j in cellY - 1...cellY + 1 {
                         if i >= 0 && i < self.rows && j >= 0 && j < self.cols {
                             cell.addNeighbor(neighbor: self.cellsGrid[i][j])
                         }
@@ -75,8 +69,7 @@ class Board{
     }
     
     func setFlag(cell : Cell) {
-        
-        if !cell.isOpened{
+        if !cell.isOpened {
             cell.toggleFlag()
             flagsAmount += cell.hasFlag ? 1 : -1
         }
@@ -95,13 +88,12 @@ class Board{
                 }
             }
         }
-        
         return cell.hasMine
     }
     
-    func showBombs(){
-        for i in 0...self.rows-1 {
-            for j in 0...self.cols-1 {
+    func showBombs() {
+        for i in 0...self.rows - 1 {
+            for j in 0...self.cols - 1 {
                 let cell = self.cellsGrid[i][j]
                 if cell.hasMine && !cell.isOpened {
                     cell.reveal()
@@ -109,7 +101,4 @@ class Board{
             }
         }
     }
-    
-    
-
 }
