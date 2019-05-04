@@ -21,6 +21,7 @@ class GameScreenViewController: UIViewController {
     var recievedUserName : String = ""
     var recievedDifficulty : DifficultyType = DifficultyType.EASY
     
+    
     var created = Date()
     var score = 0
     var isGameOver = false, isFirstMove = true
@@ -199,6 +200,12 @@ extension GameScreenViewController : UICollectionViewDataSource {
         
         // add the actions (buttons)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        let action = UIAlertAction(title: "HighScores", style: .default) { (action) -> Void in
+            _ = self.navigationController?.popViewController(animated: true)
+            let scorescreen = self.storyboard?.instantiateViewController(withIdentifier: "ScoreView")
+            _ =  self.navigationController?.pushViewController(scorescreen!, animated: true)
+        }
+        alert.addAction(action)
         
         // show the alert
         self.present(alert, animated: true, completion: nil)
@@ -210,6 +217,16 @@ extension GameScreenViewController : UICollectionViewDataSource {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         
+        var difficulty = "Easy"
+        
+        // Game difficulty
+        if recievedDifficulty == DifficultyType.MEDIUM{
+            difficulty = "Medium"
+        }else if recievedDifficulty == DifficultyType.HARD{
+            difficulty = "Hard"
+        }
+
+        
         // Rounded time as score
         let score = Int(Date().timeIntervalSince(created).rounded())
         
@@ -219,10 +236,12 @@ extension GameScreenViewController : UICollectionViewDataSource {
         // User's name
         let name = defaults.string(forKey: "username")
         
+
         // User's location
         updateUserLocation()
         
-        var str = name!+"_"
+        var str = difficulty+"_"
+        str+=name!+"_"
         str+=String(score)+"_"
         str+=String(date)+"_"
         str+=String(self.userLocation.longitude)+"_"
@@ -235,7 +254,32 @@ extension GameScreenViewController : UICollectionViewDataSource {
         
         var scoreData = arr
         scoreData.append(str)
-        defaults.set(scoreData, forKey: "scoreData")
+        let sortedScoreData = sortScores(scoreData: scoreData)
+        defaults.set(sortedScoreData, forKey: "scoreData")
+    }
+    
+    func sortScores(scoreData: [String]) -> [String]{
+        
+        var scores = [Int]()
+        for scoreStr in scoreData {
+            let scoreArr = scoreStr.components(separatedBy: "_")
+            scores.append(Int(scoreArr[2])!)
+        }
+        
+        scores.sort()
+        
+        var sortedScoreData = [String]()
+        
+        for score in scores.prefix(10) {
+            for scoreStr in scoreData {
+                let scoreArr = scoreStr.components(separatedBy: "_")
+                if Int(scoreArr[2]) == score {
+                    sortedScoreData.append(scoreStr)
+                    break
+                }
+            }
+        }
+        return sortedScoreData
     }
     
     func updateUserLocation() {
@@ -322,6 +366,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
             }
         }
     }
+    
     
     // Logic of game board cell long click.
     func handleLongPress(gesture : UILongPressGestureRecognizer!) {

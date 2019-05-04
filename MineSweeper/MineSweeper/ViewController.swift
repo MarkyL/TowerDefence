@@ -57,8 +57,15 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        let domain = Bundle.main.bundleIdentifier!
+//        UserDefaults.standard.removePersistentDomain(forName: domain)
+//        UserDefaults.standard.synchronize()
+        
         self.userNameTextField.delegate = self
         self.userNameTextField.text = defaults.string(forKey: "username")
+        
+
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
