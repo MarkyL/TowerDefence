@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class GameScreenViewController: UIViewController {
 
@@ -24,6 +25,9 @@ class GameScreenViewController: UIViewController {
     var score = 0
     var isGameOver = false, isFirstMove = true
     var gameBoard : Board?
+    
+    let locationManager = CLLocationManager()
+    var userLocation : CLLocationCoordinate2D = CLLocationCoordinate2D()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +67,7 @@ class GameScreenViewController: UIViewController {
         }
         gameBoard?.initBoard()
         // use show bombs for QA testing
-        //gameBoard?.showBombs()
+        gameBoard?.showBombs()
     }
     
     // UI of Collection and Cell view adjustments to the game difficulty.
@@ -215,9 +219,14 @@ extension GameScreenViewController : UICollectionViewDataSource {
         // User's name
         let name = defaults.string(forKey: "username")
         
+        // User's location
+        updateUserLocation()
+        
         var str = name!+"_"
         str+=String(score)+"_"
-        str+=String(date)
+        str+=String(date)+"_"
+        str+=String(self.userLocation.longitude)+"_"
+        str+=String(self.userLocation.latitude)
         
         guard let arr = defaults.array(forKey: "scoreData") as? [String] else {
             defaults.set([str], forKey: "scoreData")
@@ -227,6 +236,55 @@ extension GameScreenViewController : UICollectionViewDataSource {
         var scoreData = arr
         scoreData.append(str)
         defaults.set(scoreData, forKey: "scoreData")
+    }
+    
+    func updateUserLocation() {
+        // For use in foreground
+//        self.locationManager.requestWhenInUseAuthorization()
+        checkLocationAuthorization()
+//
+//        if CLLocationManager.locationServicesEnabled() {
+//            self.locationManager.delegate = self
+//            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+//            self.locationManager.startUpdatingLocation()
+//        }
+        
+    }
+    
+    func checkLocationAuthorization() {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse:
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            self.locationManager.startUpdatingLocation()
+            break
+        case .denied:
+            // Show alert instructing them how to turn on permissions
+            handleDeniedLocationAuthorizationState()
+            break
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .restricted:
+            // Show an alert letting them know what's up
+            break
+        case .authorizedAlways:
+            break
+        }
+    }
+    
+    func handleDeniedLocationAuthorizationState() {
+        let alertController = UIAlertController(title: NSLocalizedString("Enter your title here", comment: ""), message: NSLocalizedString("Enter your message here.", comment: ""), preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { (cancelAction) in
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+        let settingsAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (UIAlertAction) in
+            UIApplication.shared.open(NSURL(string: UIApplicationOpenSettingsURLString)! as URL, options: [:], completionHandler: nil)
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(settingsAction)
+        self.present(alertController, animated: true, completion: nil)
     }
 
     // Logic of game board cell short click.
@@ -241,7 +299,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
         let p = gesture.location(in: self.gameGridView)
         
         if let indexPath = self.gameGridView.indexPathForItem(at: p) {
-            print(indexPath.item) // the cell that was clicked.
+            //print(indexPath.item) // the cell that was clicked.
             
             let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % board.cols]
             
@@ -289,5 +347,14 @@ extension GameScreenViewController : UICollectionViewDataSource {
         } else {
             print("couldn't find index path")
         }
+    }
+}
+
+extension GameScreenViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let locValue: CLLocationCoordinate2D = manager.location?.coordinate else { return }
+        self.userLocation = locValue
+        print("locations = \(userLocation.latitude) \(userLocation.longitude)")
     }
 }
