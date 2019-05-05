@@ -28,6 +28,7 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource {
         LocationUtils.checkLocationServices(checkLocationAuthorization: locationManager, listener: self)
         
         tableView.dataSource = self
+        tableView.delegate = self
         
         guard let arr = UserDefaults.standard.array(forKey: "scoreData") as? [String] else { return }
         self.scoreData = arr
@@ -55,6 +56,12 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
+}
+
+extension ScoreScreenViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("row: \(indexPath.row)")
+    }
 }
 
 extension ScoreScreenViewController: CLLocationManagerDelegate {
