@@ -10,9 +10,8 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class ScoreScreenViewController: UIViewController, UITableViewDataSource{
-
-
+class ScoreScreenViewController: UIViewController, UITableViewDataSource {
+    
     // Don't forget to enter this in IB also
     let cellReuseIdentifier = "cell"
     
@@ -22,12 +21,11 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource{
     @IBOutlet weak var mapView: MKMapView!
     
     let locationManager = CLLocationManager()
-    let regionInMeters: Double = 1000
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        checkLocationAuthorization()
+        LocationUtils.checkLocationServices(checkLocationAuthorization: locationManager, listener: self)
         
         tableView.dataSource = self
         
@@ -57,71 +55,39 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource{
         return cell
     }
     
-    //location region
-    
-    func setupLocationManager() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
-    
-    func centerViewOnUserLocation() {
-        if let location = locationManager.location?.coordinate {
-            let region = MKCoordinateRegionMakeWithDistance(location, regionInMeters, regionInMeters)
-            mapView.setRegion(region, animated: true)
-        }
-    }
-    
-    
-    func checkLocationServices() {
-        if CLLocationManager.locationServicesEnabled() {
-            setupLocationManager()
-            checkLocationAuthorization()
-        } else {
-            // Show alert letting the user know they have to turn this on.
-        }
-    }
-    
-    
-    func checkLocationAuthorization() {
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedWhenInUse:
-            mapView.showsUserLocation = true
-            centerViewOnUserLocation()
-            break
-        case .denied:
-            // Show alert instructing them how to turn on permissions
-            handleDeniedLocationAuthorizationState()
-            break
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            // Show an alert letting them know what's up
-            break
-        case .authorizedAlways:
-            break
-        }
-    }
-    
-    func handleDeniedLocationAuthorizationState() {
-        let alertController = UIAlertController(title: NSLocalizedString("Enter your title here", comment: ""), message: NSLocalizedString("Enter your message here.", comment: ""), preferredStyle: .alert)
-        
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { (cancelAction) in
-                _ = self.navigationController?.popViewController(animated: true)
-        }
-        let settingsAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (UIAlertAction) in
-            UIApplication.shared.open(NSURL(string: UIApplicationOpenSettingsURLString)! as URL, options: [:], completionHandler: nil)
-        }
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(settingsAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
 }
 
 extension ScoreScreenViewController: CLLocationManagerDelegate {
         
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        checkLocationAuthorization()
+        LocationUtils.checkLocationAuthorization(checkLocationAuthorization: locationManager, listener: self)
+    }
+}
+
+extension ScoreScreenViewController: LocationDelegate {
+    func onAuthorizedWhenInUse() {
+        mapView.showsUserLocation = true
+        LocationUtils.centerViewOnUserLocation(locationManager: locationManager, mapView: mapView)
+    }
+    
+    func onDenied() {
+        LocationUtils.handleDeniedLocationAuthorizationState(controller: self.navigationController!)
+    }
+    
+    func onNotDetermined() {
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func onRestricted() {
+        //Stub!
+    }
+    
+    func onAuthorizedAlways() {
+        //Stub!
+    }
+    
+    func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
 }

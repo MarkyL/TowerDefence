@@ -240,6 +240,12 @@ extension GameScreenViewController : UICollectionViewDataSource {
         // User's location
         updateUserLocation()
         
+        if !CLLocationCoordinate2DIsValid(self.userLocation) {
+            print("Invalid location coordinates")
+            return
+            
+        }
+        
         var str = difficulty+"_"
         str+=name!+"_"
         str+=String(score)+"_"
@@ -282,53 +288,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
         return sortedScoreData
     }
     
-    func updateUserLocation() {
-        // For use in foreground
-//        self.locationManager.requestWhenInUseAuthorization()
-        checkLocationAuthorization()
-//
-//        if CLLocationManager.locationServicesEnabled() {
-//            self.locationManager.delegate = self
-//            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-//            self.locationManager.startUpdatingLocation()
-//        }
-        
-    }
-    
-    func checkLocationAuthorization() {
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedWhenInUse:
-            self.locationManager.delegate = self
-            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            self.locationManager.startUpdatingLocation()
-            break
-        case .denied:
-            // Show alert instructing them how to turn on permissions
-            handleDeniedLocationAuthorizationState()
-            break
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            // Show an alert letting them know what's up
-            break
-        case .authorizedAlways:
-            break
-        }
-    }
-    
-    func handleDeniedLocationAuthorizationState() {
-        let alertController = UIAlertController(title: NSLocalizedString("Enter your title here", comment: ""), message: NSLocalizedString("Enter your message here.", comment: ""), preferredStyle: .alert)
-        
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { (cancelAction) in
-            _ = self.navigationController?.popViewController(animated: true)
-        }
-        let settingsAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (UIAlertAction) in
-            UIApplication.shared.open(NSURL(string: UIApplicationOpenSettingsURLString)! as URL, options: [:], completionHandler: nil)
-        }
-        
-        alertController.addAction(cancelAction)
-        alertController.addAction(settingsAction)
-        self.present(alertController, animated: true, completion: nil)
+    func updateUserLocation() { LocationUtils.checkLocationServices(checkLocationAuthorization: locationManager, listener: self)
     }
 
     // Logic of game board cell short click.
@@ -402,4 +362,36 @@ extension GameScreenViewController: CLLocationManagerDelegate {
         self.userLocation = locValue
         print("locations = \(userLocation.latitude) \(userLocation.longitude)")
     }
+}
+
+extension GameScreenViewController: LocationDelegate {
+    func onAuthorizedWhenInUse() {
+        print("access granted")
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.startUpdatingLocation()
+    }
+    
+    func onDenied() {
+        LocationUtils.handleDeniedLocationAuthorizationState(controller: self.navigationController!)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func onNotDetermined() {
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func onRestricted() {
+        //Stub!
+    }
+    
+    func onAuthorizedAlways() {
+        //Stub!
+    }
+    
+    func setupLocationManager() {
+        locationManager.delegate = self
+    }
+    
+    
 }
