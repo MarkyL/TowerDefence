@@ -21,6 +21,7 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var mapView: MKMapView!
     
     let locationManager = CLLocationManager()
+    var scoreArr : [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +46,7 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! MyTableCell
         
         let scoreStr = self.scoreData[indexPath.row]
-        let scoreArr = scoreStr.components(separatedBy: "_")
+        self.scoreArr = scoreStr.components(separatedBy: "_")
         if scoreArr.count == 6 {
             cell.difficultylbl.text = scoreArr[0]
             cell.userNamelbl.text = scoreArr[1]
@@ -61,6 +62,7 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource {
 extension ScoreScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("row: \(indexPath.row)")
+        print("user data at row \(indexPath.row), data = \(self.scoreArr)")
     }
 }
 
