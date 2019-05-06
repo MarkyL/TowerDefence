@@ -46,7 +46,7 @@ class ScoreScreenViewController: UIViewController, UITableViewDataSource {
         
         let scoreStr = self.scoreData[indexPath.row]
         let scoreArr = scoreStr.components(separatedBy: "_")
-        if scoreArr.count == 4 {
+        if scoreArr.count == 6 {
             cell.difficultylbl.text = scoreArr[0]
             cell.userNamelbl.text = scoreArr[1]
             cell.scorelbl.text = scoreArr[2]
