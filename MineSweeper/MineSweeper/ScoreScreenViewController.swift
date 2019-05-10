@@ -63,6 +63,11 @@ extension ScoreScreenViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("row: \(indexPath.row)")
         print("user data at row \(indexPath.row), data = \(self.scoreArr)")
+        guard let long = Double(self.scoreArr[4]) else { return }
+        guard let lat = Double(self.scoreArr[5]) else { return }
+        let center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        self.mapView.setRegion(region, animated: true)
     }
 }
 
