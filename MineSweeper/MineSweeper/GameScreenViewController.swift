@@ -253,6 +253,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
         str+=String(self.userLocation.longitude)+"_"
         str+=String(self.userLocation.latitude)
         
+        print("str = \(str)")
         guard let arr = defaults.array(forKey: "scoreData") as? [String] else {
             defaults.set([str], forKey: "scoreData")
             return
@@ -369,7 +370,9 @@ extension GameScreenViewController: LocationDelegate {
         print("access granted")
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.startUpdatingLocation()
+        //self.locationManager.startUpdatingLocation()
+        self.userLocation = (self.locationManager.location?.coordinate)!
+        print("user location = \(userLocation)")
     }
     
     func onDenied() {
