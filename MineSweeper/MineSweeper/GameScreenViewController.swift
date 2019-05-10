@@ -39,6 +39,9 @@ class GameScreenViewController: UIViewController {
         self.gameGridView.dataSource = self
         
         initialize()
+        
+        // User's location
+        updateUserLocation()
     }
     
     // Initialazation of viewController attributes and game board logic.
@@ -236,7 +239,8 @@ extension GameScreenViewController : UICollectionViewDataSource {
         // User's name
         let name = defaults.string(forKey: "username")
         
-
+        // some issue with virtual machine, described here. we don't have iOS device to develop on.
+        //https://forums.raywenderlich.com/t/ios-user-location-error-os-kern-invalid-capability-0x14/33865
         // User's location
         updateUserLocation()
         
