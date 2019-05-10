@@ -13,13 +13,11 @@ import CoreLocation
 class LocationUtils {
     
     static let regionInMeters: Double = 1000
-    static weak var callBack : LocationDelegate?
     
     class func checkLocationServices(checkLocationAuthorization : CLLocationManager, listener : LocationDelegate) {
         if CLLocationManager.locationServicesEnabled() {
-            callBack = listener
             listener.setupLocationManager()
-            LocationUtils.checkLocationAuthorization(checkLocationAuthorization: checkLocationAuthorization, listener: callBack)
+            LocationUtils.checkLocationAuthorization(checkLocationAuthorization: checkLocationAuthorization, listener: listener)
         } else {
             // Show alert letting the user know they have to turn this on.
         }
