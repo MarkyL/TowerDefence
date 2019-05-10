@@ -308,7 +308,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
             
             let logicCell = board.cellsGrid[indexPath.item / board.rows][indexPath.item % board.cols]
             
-            if (logicCell.hasFlag) { return }
+            if (logicCell.isOpened || logicCell.hasFlag) { return }
             
             if (board.reveal(cell: logicCell)) {
                 // Game is over - you hit a mine!
