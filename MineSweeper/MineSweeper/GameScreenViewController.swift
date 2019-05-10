@@ -186,6 +186,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
     // handle end game logic and show alert.
     func gameOver(isWinner : Bool) {
         isGameOver = true
+        animateSmileyButton()
         var gameOverMsg : String , gameOverTitle : String
         if isWinner {
             gameOverTitle = "Good game"
@@ -212,6 +213,18 @@ extension GameScreenViewController : UICollectionViewDataSource {
         
         // show the alert
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func animateSmileyButton() {
+        UIView.animate(withDuration: 1.0) { () -> Void in
+            self.restartBtn.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
+            self.restartBtn.transform =  CGAffineTransform(scaleX: 2, y: 2)
+        }
+        
+        UIView.animate(withDuration: 1.0, delay: 0.45, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+            self.restartBtn.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
+            self.restartBtn.transform =  CGAffineTransform(scaleX: 0.5, y: 0.5)
+        }, completion: nil)
     }
     
     func saveEndGameData(){
