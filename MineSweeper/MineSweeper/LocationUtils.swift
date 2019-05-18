@@ -46,7 +46,7 @@ class LocationUtils {
         let alertController = UIAlertController(title: NSLocalizedString("Location authorization", comment: ""), message: NSLocalizedString("For full functionality, please enable location access.", comment: ""), preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { (cancelAction) in
-            _ = controller.popViewController(animated: true)
+            //_ = controller.popViewController(animated: true)
         }
         let settingsAction = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { (UIAlertAction) in
             UIApplication.shared.open(NSURL(string: UIApplicationOpenSettingsURLString)! as URL, options: [:], completionHandler: nil)

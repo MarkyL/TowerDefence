@@ -21,7 +21,6 @@ class GameScreenViewController: UIViewController {
     var recievedUserName : String = ""
     var recievedDifficulty : DifficultyType = DifficultyType.EASY
     
-    
     var created = Date()
     var score = 0
     var isGameOver = false, isFirstMove = true
@@ -205,7 +204,7 @@ extension GameScreenViewController : UICollectionViewDataSource {
         // add the actions (buttons)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         let action = UIAlertAction(title: "HighScores", style: .default) { (action) -> Void in
-            _ = self.navigationController?.popViewController(animated: true)
+            //_ = self.navigationController?.popViewController(animated: true)
             let scorescreen = self.storyboard?.instantiateViewController(withIdentifier: "ScoreView")
             _ =  self.navigationController?.pushViewController(scorescreen!, animated: true)
         }
@@ -255,20 +254,19 @@ extension GameScreenViewController : UICollectionViewDataSource {
         // some issue with virtual machine, described here. we don't have iOS device to develop on.
         //https://forums.raywenderlich.com/t/ios-user-location-error-os-kern-invalid-capability-0x14/33865
         // User's location
-        updateUserLocation()
+        //updateUserLocation()
         
-        if !CLLocationCoordinate2DIsValid(self.userLocation) {
+        if !CLLocationCoordinate2DIsValid(self.userLocation) || self.userLocation.latitude == 0 || self.userLocation.longitude == 0 {
             print("Invalid location coordinates")
-            return
-            
+            return;
         }
         
         var str = difficulty+"_"
         str+=name!+"_"
         str+=String(score)+"_"
         str+=String(date)+"_"
-        str+=String(self.userLocation.longitude)+"_"
-        str+=String(self.userLocation.latitude)
+        str+=String(self.userLocation.latitude)+"_"
+        str+=String(self.userLocation.longitude)
         
         print("str = \(str)")
         guard let arr = defaults.array(forKey: "scoreData") as? [String] else {
@@ -306,7 +304,8 @@ extension GameScreenViewController : UICollectionViewDataSource {
         return sortedScoreData
     }
     
-    func updateUserLocation() { LocationUtils.checkLocationServices(checkLocationAuthorization: locationManager, listener: self)
+    func updateUserLocation() {
+        LocationUtils.checkLocationServices(checkLocationAuthorization: locationManager, listener: self)
     }
 
     // Logic of game board cell short click.
@@ -388,17 +387,23 @@ extension GameScreenViewController: LocationDelegate {
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.startUpdatingLocation()
-        self.userLocation = (self.locationManager.location?.coordinate)!
+        if let currLoc = self.locationManager.location?.coordinate {
+            self.userLocation = currLoc
+        }
+        
+        //self.userLocation = (self.locationManager.location?.coordinate)!
         print("user location = \(userLocation)")
     }
     
     func onDenied() {
+        print("access denied")
         LocationUtils.handleDeniedLocationAuthorizationState(controller: self.navigationController!)
-        self.navigationController?.popViewController(animated: true)
+        //self.navigationController?.popViewController(animated: true)
     }
     
     func onNotDetermined() {
         locationManager.requestWhenInUseAuthorization()
+        updateUserLocation()
     }
     
     func onRestricted() {
@@ -415,3 +420,4 @@ extension GameScreenViewController: LocationDelegate {
     
     
 }
+
